@@ -33,5 +33,19 @@ namespace ApiEcommerceDDD.Application
             var endereco = _mapper.Map<Endereco>(enderecoDto);
             await this._serviceEndereco.Update(endereco);
         }
+
+        public async Task AtualizarCamposEspecificos(EnderecoDto enderecoDto)
+        {
+            var endereco = this._serviceEndereco.GetById(enderecoDto.Id).Result;
+            endereco.CEP = enderecoDto.CEP;
+            endereco.Logradouro = enderecoDto.Logradouro;
+            endereco.Numero = enderecoDto.Numero;
+            endereco.Complemento = enderecoDto.Complemento;
+            endereco.Bairro = enderecoDto.Bairro;
+            endereco.Cidade = enderecoDto.Cidade;
+            endereco.UF = enderecoDto.UF;
+
+            await this._serviceEndereco.Update(endereco);
+        }
     }
 }

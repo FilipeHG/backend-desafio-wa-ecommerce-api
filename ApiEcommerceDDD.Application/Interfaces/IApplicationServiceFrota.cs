@@ -9,5 +9,7 @@ namespace ApiEcommerceDDD.Application.Interfaces
         Task<long> Add(FrotaDto frotaDto);
 
         Task Update(FrotaDto frotaDto);
+
+        Task AtualizarCamposEspecificos(FrotaDto frotaDto);
     }
 }

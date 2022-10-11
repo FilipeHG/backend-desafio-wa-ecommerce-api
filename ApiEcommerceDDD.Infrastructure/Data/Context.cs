@@ -25,7 +25,7 @@ namespace ApiEcommerceDDD.Infrastructure.Data
         //    {
         //        if (entry.State == EntityState.Added)
         //        {
-        //            entry.Property("DataCriacao").CurrentValue = DateTime.Now;
+        //            entry.Property("DataCriacao").CurrentValue = DateTime.UtcNow;
         //        }
         //        if (entry.State == EntityState.Modified)
         //        {

@@ -61,26 +61,10 @@ namespace ApiEcommerceDDD.API.Controllers
 
                 var pedidoExistente = _applicationServicePedido.ObterPedidoCompletoPorId(pedidoDTO.Id).Result;
                 if (pedidoExistente != null)
-                {
-                    pedidoDTO.Id = pedidoExistente.Id;
-                    pedidoDTO.FrotaId = (pedidoDTO.FrotaId == 0) ? pedidoExistente.FrotaId : pedidoDTO.FrotaId;
-                    pedidoDTO.Frota.Id = (pedidoDTO.Frota.Id == 0) ? pedidoExistente.Frota.Id : pedidoDTO.Frota.Id;
-                    pedidoDTO.EnderecoDeEntrega.Id = (pedidoDTO.EnderecoDeEntrega.Id == 0) ? pedidoExistente.EnderecoDeEntrega.Id : pedidoDTO.EnderecoDeEntrega.Id;
-                    pedidoDTO.EnderecoDeEntrega.PedidoId = pedidoDTO.Id;
-
-                    for (var i = 0; i < pedidoDTO.Produtos?.Count; i++)
-                    {
-                        if (pedidoExistente.Produtos?.Count > i)
-                        {
-                            pedidoDTO.Produtos[i].Id = pedidoExistente.Produtos[i].Id;
-                            pedidoDTO.Produtos[i].PedidoId = pedidoDTO.Id;
-                        }
-                    }
-                }
+                    _applicationServicePedido.AtualizarCamposEspecificos(pedidoDTO);
                 else
                     return NotFound();
 
-                _applicationServicePedido.Update(pedidoDTO);
                 return Ok("Pedido atualizado com sucesso!");
             }
             catch (Exception ex)

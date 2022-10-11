@@ -33,5 +33,15 @@ namespace ApiEcommerceDDD.Application
             var frota = _mapper.Map<Frota>(frotaDto);
             await this._serviceFrota.Update(frota);
         }
+
+        public async Task AtualizarCamposEspecificos(FrotaDto frotaDto)
+        {
+            var frota = this._serviceFrota.GetById(frotaDto.Id).Result;
+            frota.Nome = frotaDto.Nome;
+            frota.Descricao = frotaDto.Descricao;
+            frota.PlacaVeiculoUtilizado = frotaDto.PlacaVeiculoUtilizado;
+
+            await this._serviceFrota.Update(frota);
+        }
     }
 }

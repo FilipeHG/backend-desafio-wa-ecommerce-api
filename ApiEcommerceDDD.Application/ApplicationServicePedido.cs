@@ -35,7 +35,7 @@ namespace ApiEcommerceDDD.Application
         public async Task<long> Add(PedidoDto pedidoDto)
         {
             var pedido = _mapper.Map<Pedido>(pedidoDto);
-            pedido.DataCriacao = System.DateTime.Now;
+            pedido.DataCriacao = System.DateTime.UtcNow;
             await this._servicePedido.Add(pedido);
 
             return pedido.Id;
@@ -44,16 +44,9 @@ namespace ApiEcommerceDDD.Application
         public async Task Update(PedidoDto pedidoDto)
         {
             var pedido = _mapper.Map<Pedido>(pedidoDto);
-            pedido.DataAtualizacao = System.DateTime.Now;
+            pedido.DataAtualizacao = System.DateTime.UtcNow;
 
-            try
-            {
-                await this._servicePedido.Update(pedido);
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
+            await this._servicePedido.Update(pedido);
         }
 
         public async Task Remove(PedidoDto pedidoDto)
@@ -80,9 +73,33 @@ namespace ApiEcommerceDDD.Application
 
         public async Task SoftDelete(PedidoDto pedidoDto)
         {
-            var pedido = _mapper.Map<Pedido>(pedidoDto);
-            pedido.DataDelecao = System.DateTime.Now;
+            var pedido = this._servicePedido.GetById(pedidoDto.Id).Result;
+            pedido.DataDelecao = System.DateTime.UtcNow;
+
             await this._servicePedido.Update(pedido);
+        }
+
+        public async Task AtualizarCamposEspecificos(PedidoDto pedidoDto)
+        {
+            var pedido = this._servicePedido.GetById(pedidoDto.Id).Result;
+            ComplementarPayloadCamposRelacionais(pedido, pedidoDto);
+
+            pedido.DataAtualizacao = System.DateTime.UtcNow;
+            pedido.Status = pedidoDto.Status;
+            pedido.DataEntrega = pedidoDto.DataEntrega;
+
+            await this._servicePedido.Update(pedido);
+
+            await this._applicationServiceFrota.AtualizarCamposEspecificos(pedidoDto.Frota);
+            await this._applicationServiceEndereco.AtualizarCamposEspecificos(pedidoDto.EnderecoDeEntrega);
+
+            foreach (var produto in pedidoDto.Produtos)
+            {
+                if (produto.Id > 0)
+                    await this._applicationServiceProduto.AtualizarCamposEspecificos(produto);
+                else
+                    await this._applicationServiceProduto.Add(produto);
+            }
         }
 
         public async Task<PedidoDto> ObterPedidoCompletoPorId(long pedidoId)
@@ -105,6 +122,23 @@ namespace ApiEcommerceDDD.Application
         {
             var total = await this._servicePedido.ObterTotalDeRegistros();
             return total;
+        }
+
+        private void ComplementarPayloadCamposRelacionais(Pedido pedidoExistente, PedidoDto pedidoDto)
+        {
+            long frotaId = (pedidoDto.FrotaId > 0) ? pedidoDto.FrotaId : (pedidoDto.Frota.Id > 0 ? pedidoDto.Frota.Id : pedidoExistente.FrotaId);
+            pedidoDto.FrotaId = frotaId;
+            pedidoDto.Frota.Id = frotaId;
+            pedidoDto.EnderecoDeEntrega.Id = (pedidoDto.EnderecoDeEntrega.Id == 0) ? pedidoExistente.EnderecoDeEntrega.Id : pedidoDto.EnderecoDeEntrega.Id;
+            pedidoDto.EnderecoDeEntrega.PedidoId = pedidoDto.Id;
+
+            for (var i = 0; i < pedidoDto.Produtos?.Count; i++)
+            {
+                if (pedidoExistente.Produtos?.Count > i)
+                    pedidoDto.Produtos[i].Id = pedidoExistente.Produtos[i].Id;
+
+                pedidoDto.Produtos[i].PedidoId = pedidoDto.Id;
+            }
         }
     }
 }

@@ -39,5 +39,15 @@ namespace ApiEcommerceDDD.Application
             var produto = _mapper.Map<Produto>(produtoDto);
             await this._serviceProduto.Remove(produto);
         }
+
+        public async Task AtualizarCamposEspecificos(ProdutoDto produtoDto)
+        {
+            var produto = this._serviceProduto.GetById(produtoDto.Id).Result;
+            produto.Nome = produtoDto.Nome;
+            produto.Descricao = produtoDto.Descricao;
+            produto.Valor = produtoDto.Valor;
+
+            await this._serviceProduto.Update(produto);
+        }
     }
 }

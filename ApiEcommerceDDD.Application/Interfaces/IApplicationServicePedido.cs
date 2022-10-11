@@ -18,6 +18,8 @@ namespace ApiEcommerceDDD.Application.Interfaces
 
         Task SoftDelete(PedidoDto pedidoDto);
 
+        Task AtualizarCamposEspecificos(PedidoDto pedidoDto);
+
         Task<PedidoDto> ObterPedidoCompletoPorId(long pedidoId);
 
         Task<IEnumerable<PedidoDto>> ObterPedidosComPaginacao(int page, int limit, string sort);

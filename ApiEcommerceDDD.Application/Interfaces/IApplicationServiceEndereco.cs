@@ -9,5 +9,7 @@ namespace ApiEcommerceDDD.Application.Interfaces
         Task<long> Add(EnderecoDto enderecoDto);
 
         Task Update(EnderecoDto enderecoDto);
+
+        Task AtualizarCamposEspecificos(EnderecoDto enderecoDto);
     }
 }

@@ -11,5 +11,7 @@ namespace ApiEcommerceDDD.Application.Interfaces
         Task Update(ProdutoDto produtoDto);
 
         Task Remove(ProdutoDto produtoDto);
+
+        Task AtualizarCamposEspecificos(ProdutoDto produtoDto);
     }
 }
