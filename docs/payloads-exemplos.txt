@@ -1,0 +1,62 @@
+id	  |	    produtos	 	|	 equipe	   |	placa	|	status	  |		dataEntrega		 |	   dataCriacao	      |	  [Editar]   | 	 [DELETAR]
+1		Café com pimenta		Zé Boy			LPQ325		a caminho	 11/10/2022 04:03:04	08/10/2022 12:05:01
+
+//============================
+
+// POST (CREATE)
+{
+  "frota": {
+    "nome": "Zé Boy",
+    "descricao": "Motoboy dos interior",
+    "placaVeiculoUtilizado": "LPQ325"
+  },
+  "produtos": [
+    {
+      "nome": "Café com pimenta",
+      "descricao": "Café extra forte com toque de pimenta scorpion.",
+      "valor": 67
+    }
+  ],
+  "enderecoDeEntrega": {
+    "cep": "08563-999",
+    "logradouro": "Av das Tavernas",
+    "numero": 789,
+    "complemento": "",
+    "bairro": "Monte do Gigante",
+    "cidade": "Botucatu",
+    "uf": "SP"
+  },
+  "status": "a caminho",
+  "dataEntrega": "2022-10-11T04:03:04.187Z"
+}
+
+//============================
+
+//PUT (UPDATE)
+{
+  "id": 2,
+  "frota": {
+    "nome": "Zé Boy 2",
+    "descricao": "Motoboy dos interior de SP",
+    "placaVeiculoUtilizado": "LPQ325"
+  },
+  "produtos": [
+    {
+      "nome": "Café SEM pimenta",
+      "descricao": "Café normal torra média.",
+      "valor": 67
+    }
+  ],
+  "enderecoDeEntrega": {
+    "cep": "08563-999",
+    "logradouro": "Av das Nações uNidas",
+    "numero": 789,
+    "complemento": "",
+    "bairro": "Monte do Gigante",
+    "cidade": "Botucatu",
+    "uf": "SP"
+  },
+  "status": "entregue",
+  "dataEntrega": "2022-09-12T15:00:02.187Z"
+}
+
