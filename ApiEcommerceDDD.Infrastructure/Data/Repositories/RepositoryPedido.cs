@@ -71,7 +71,7 @@ namespace ApiEcommerceDDD.Infrastructure.Data.Repositories
             if (pedidoId != null && pedidoId > 0)
                 query = query.Where(e => e.Id == pedidoId);
 
-            query = query.OrderBy(x => x.DataCriacao);
+            query = query.OrderByDescending(x => x.DataCriacao);
 
             return query.AsQueryable();
         }

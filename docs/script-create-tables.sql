@@ -40,5 +40,5 @@ CREATE TABLE Produto (
     PedidoId bigint FOREIGN KEY REFERENCES Pedido(Id),
     Nome varchar(250) NOT NULL,
     Descricao varchar(250) NOT NULL,
-    Valor DECIMAL(6,2) NOT NULL
+    Valor DECIMAL(9,2) NOT NULL
 );
