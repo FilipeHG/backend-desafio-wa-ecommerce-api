@@ -5,6 +5,7 @@ using ApiEcommerceDDD.Domain.Core.Interfaces.Services;
 using ApiEcommerceDDD.Domain.Entitys;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace ApiEcommerceDDD.Application
 {
@@ -22,30 +23,51 @@ namespace ApiEcommerceDDD.Application
 
         public async Task<long> Add(EnderecoDto enderecoDto)
         {
-            var endereco = _mapper.Map<Endereco>(enderecoDto);
-            await this._serviceEndereco.Add(endereco);
+            try
+            {
+                var endereco = _mapper.Map<Endereco>(enderecoDto);
+                await this._serviceEndereco.Add(endereco);
 
-            return endereco.Id;
+                return endereco.Id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task Update(EnderecoDto enderecoDto)
         {
-            var endereco = _mapper.Map<Endereco>(enderecoDto);
-            await this._serviceEndereco.Update(endereco);
+            try
+            {
+                var endereco = _mapper.Map<Endereco>(enderecoDto);
+                await this._serviceEndereco.Update(endereco);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task AtualizarCamposEspecificos(EnderecoDto enderecoDto)
         {
-            var endereco = this._serviceEndereco.GetById(enderecoDto.Id).Result;
-            endereco.CEP = enderecoDto.CEP;
-            endereco.Logradouro = enderecoDto.Logradouro;
-            endereco.Numero = enderecoDto.Numero;
-            endereco.Complemento = enderecoDto.Complemento;
-            endereco.Bairro = enderecoDto.Bairro;
-            endereco.Cidade = enderecoDto.Cidade;
-            endereco.UF = enderecoDto.UF;
+            try
+            {
+                var endereco = this._serviceEndereco.GetById(enderecoDto.Id).Result;
+                endereco.CEP = enderecoDto.CEP;
+                endereco.Logradouro = enderecoDto.Logradouro;
+                endereco.Numero = enderecoDto.Numero;
+                endereco.Complemento = enderecoDto.Complemento;
+                endereco.Bairro = enderecoDto.Bairro;
+                endereco.Cidade = enderecoDto.Cidade;
+                endereco.UF = enderecoDto.UF;
 
-            await this._serviceEndereco.Update(endereco);
+                await this._serviceEndereco.Update(endereco);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

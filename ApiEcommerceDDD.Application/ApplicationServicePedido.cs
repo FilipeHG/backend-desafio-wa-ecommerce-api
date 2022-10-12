@@ -6,6 +6,7 @@ using ApiEcommerceDDD.Domain.Entitys;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace ApiEcommerceDDD.Application
 {
@@ -34,94 +35,164 @@ namespace ApiEcommerceDDD.Application
 
         public async Task<long> Add(PedidoDto pedidoDto)
         {
-            var pedido = _mapper.Map<Pedido>(pedidoDto);
-            pedido.DataCriacao = System.DateTime.UtcNow;
-            await this._servicePedido.Add(pedido);
+            try
+            {
+                var pedido = _mapper.Map<Pedido>(pedidoDto);
+                pedido.DataCriacao = System.DateTime.UtcNow;
+                await this._servicePedido.Add(pedido);
 
-            return pedido.Id;
+                return pedido.Id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task Update(PedidoDto pedidoDto)
         {
-            var pedido = _mapper.Map<Pedido>(pedidoDto);
-            pedido.DataAtualizacao = System.DateTime.UtcNow;
+            try
+            {
+                var pedido = _mapper.Map<Pedido>(pedidoDto);
+                pedido.DataAtualizacao = System.DateTime.UtcNow;
 
-            await this._servicePedido.Update(pedido);
+                await this._servicePedido.Update(pedido);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task Remove(PedidoDto pedidoDto)
         {
-            var pedido = _mapper.Map<Pedido>(pedidoDto);
-            await this._servicePedido.Remove(pedido);
+            try
+            {
+                var pedido = _mapper.Map<Pedido>(pedidoDto);
+                await this._servicePedido.Remove(pedido);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<IEnumerable<PedidoDto>> GetAll()
         {
-            var pedidos = await this._servicePedido.GetAll();
-            var pedidosDto = _mapper.Map<IEnumerable<PedidoDto>>(pedidos);
+            try
+            {
+                var pedidos = await this._servicePedido.GetAll();
+                var pedidosDto = _mapper.Map<IEnumerable<PedidoDto>>(pedidos);
 
-            return pedidosDto;
+                return pedidosDto;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<PedidoDto> GetById(long id)
         {
-            var pedido = await this._servicePedido.GetById(id);
-            var pedidoDto = _mapper.Map<PedidoDto>(pedido);
+            try
+            {
+                var pedido = await this._servicePedido.GetById(id);
+                var pedidoDto = _mapper.Map<PedidoDto>(pedido);
 
-            return pedidoDto;
+                return pedidoDto;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task SoftDelete(PedidoDto pedidoDto)
         {
-            var pedido = this._servicePedido.GetById(pedidoDto.Id).Result;
-            pedido.DataDelecao = System.DateTime.UtcNow;
+            try
+            {
+                var pedido = this._servicePedido.GetById(pedidoDto.Id).Result;
+                pedido.DataDelecao = System.DateTime.UtcNow;
 
-            await this._servicePedido.Update(pedido);
+                await this._servicePedido.Update(pedido);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task AtualizarCamposEspecificos(PedidoDto pedidoDto)
         {
-            var pedido = this._servicePedido.GetById(pedidoDto.Id).Result;
-            ComplementarPayloadCamposRelacionais(pedido, pedidoDto);
-
-            pedido.DataAtualizacao = System.DateTime.UtcNow;
-            pedido.Status = pedidoDto.Status;
-            pedido.DataEntrega = pedidoDto.DataEntrega;
-
-            await this._servicePedido.Update(pedido);
-
-            await this._applicationServiceFrota.AtualizarCamposEspecificos(pedidoDto.Frota);
-            await this._applicationServiceEndereco.AtualizarCamposEspecificos(pedidoDto.EnderecoDeEntrega);
-
-            foreach (var produto in pedidoDto.Produtos)
+            try
             {
-                if (produto.Id > 0)
-                    await this._applicationServiceProduto.AtualizarCamposEspecificos(produto);
-                else
-                    await this._applicationServiceProduto.Add(produto);
+                var pedido = this._servicePedido.GetById(pedidoDto.Id).Result;
+                ComplementarPayloadCamposRelacionais(pedido, pedidoDto);
+
+                pedido.DataAtualizacao = System.DateTime.UtcNow;
+                pedido.Status = pedidoDto.Status;
+                pedido.DataEntrega = pedidoDto.DataEntrega;
+
+                await this._servicePedido.Update(pedido);
+
+                await this._applicationServiceFrota.AtualizarCamposEspecificos(pedidoDto.Frota);
+                await this._applicationServiceEndereco.AtualizarCamposEspecificos(pedidoDto.EnderecoDeEntrega);
+
+                foreach (var produto in pedidoDto.Produtos)
+                {
+                    if (produto.Id > 0)
+                        await this._applicationServiceProduto.AtualizarCamposEspecificos(produto);
+                    else
+                        await this._applicationServiceProduto.Add(produto);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
         public async Task<PedidoDto> ObterPedidoCompletoPorId(long pedidoId)
         {
-            var pedido = await this._servicePedido.ObterPedidoCompletoPorId(pedidoId);
-            var pedidoDto = _mapper.Map<PedidoDto>(pedido);
+            try
+            {
+                var pedido = await this._servicePedido.ObterPedidoCompletoPorId(pedidoId);
+                var pedidoDto = _mapper.Map<PedidoDto>(pedido);
 
-            return pedidoDto;
+                return pedidoDto;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<IEnumerable<PedidoDto>> ObterPedidosComPaginacao(int page, int limit, string sort)
         {
-            var pedidos = await this._servicePedido.ObterPedidosComPaginacao(page, limit, sort);
-            var pedidosDto = _mapper.Map<IEnumerable<PedidoDto>>(pedidos);
+            try
+            {
+                var pedidos = await this._servicePedido.ObterPedidosComPaginacao(page, limit, sort);
+                var pedidosDto = _mapper.Map<IEnumerable<PedidoDto>>(pedidos);
 
-            return pedidosDto;
+                return pedidosDto;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<int> ObterTotalDeRegistros()
         {
-            var total = await this._servicePedido.ObterTotalDeRegistros();
-            return total;
+            try
+            {
+                var total = await this._servicePedido.ObterTotalDeRegistros();
+                return total;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void ComplementarPayloadCamposRelacionais(Pedido pedidoExistente, PedidoDto pedidoDto)

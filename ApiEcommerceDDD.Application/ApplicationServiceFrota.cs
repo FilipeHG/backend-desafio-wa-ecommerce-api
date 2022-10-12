@@ -5,6 +5,7 @@ using ApiEcommerceDDD.Domain.Core.Interfaces.Services;
 using ApiEcommerceDDD.Domain.Entitys;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace ApiEcommerceDDD.Application
 {
@@ -22,26 +23,47 @@ namespace ApiEcommerceDDD.Application
 
         public async Task<long> Add(FrotaDto frotaDto)
         {
-            var frota = _mapper.Map<Frota>(frotaDto);
-            await this._serviceFrota.Add(frota);
+            try
+            {
+                var frota = _mapper.Map<Frota>(frotaDto);
+                await this._serviceFrota.Add(frota);
 
-            return frota.Id;
+                return frota.Id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task Update(FrotaDto frotaDto)
         {
-            var frota = _mapper.Map<Frota>(frotaDto);
-            await this._serviceFrota.Update(frota);
+            try
+            {
+                var frota = _mapper.Map<Frota>(frotaDto);
+                await this._serviceFrota.Update(frota);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task AtualizarCamposEspecificos(FrotaDto frotaDto)
         {
-            var frota = this._serviceFrota.GetById(frotaDto.Id).Result;
-            frota.Nome = frotaDto.Nome;
-            frota.Descricao = frotaDto.Descricao;
-            frota.PlacaVeiculoUtilizado = frotaDto.PlacaVeiculoUtilizado;
+            try
+            {
+                var frota = this._serviceFrota.GetById(frotaDto.Id).Result;
+                frota.Nome = frotaDto.Nome;
+                frota.Descricao = frotaDto.Descricao;
+                frota.PlacaVeiculoUtilizado = frotaDto.PlacaVeiculoUtilizado;
 
-            await this._serviceFrota.Update(frota);
+                await this._serviceFrota.Update(frota);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
 -- CREATE TABLES BY ENTITY PROJECT
 --=================================================
 
+DROP TABLE IF EXISTS [wa-desafio-ecommerce].dbo.Endereco;
 DROP TABLE IF EXISTS [wa-desafio-ecommerce].dbo.Pedido;
 DROP TABLE IF EXISTS [wa-desafio-ecommerce].dbo.Frota;
-DROP TABLE IF EXISTS [wa-desafio-ecommerce].dbo.Endereco;
 DROP TABLE IF EXISTS [wa-desafio-ecommerce].dbo.Produto;
 
 CREATE TABLE Frota (
