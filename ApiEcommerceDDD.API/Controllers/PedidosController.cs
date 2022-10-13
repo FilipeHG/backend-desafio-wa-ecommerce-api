@@ -128,7 +128,8 @@ namespace ApiEcommerceDDD.API.Controllers
         [HttpGet("{id}")]
         public ActionResult<PedidoDto> GetById([FromRoute] long id)
         {
-            return Ok(_applicationServicePedido.GetById(id).Result);
+            var retult = _applicationServicePedido.ObterPedidoCompletoPorId(id).Result;
+            return Ok(retult);
         }
     }
 }
