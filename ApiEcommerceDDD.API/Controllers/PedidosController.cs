@@ -126,7 +126,7 @@ namespace ApiEcommerceDDD.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public ActionResult<PedidoDto> GetById([FromRoute] long id)
+        public ActionResult<IEnumerable<PedidoDto>> GetById([FromRoute] long id)
         {
             var retult = _applicationServicePedido.ObterPedidoCompletoPorId(id).Result;
             return Ok(retult);
