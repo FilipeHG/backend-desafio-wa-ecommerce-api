@@ -152,16 +152,14 @@ namespace ApiEcommerceDDD.Application
             }
         }
 
-        public async Task<IEnumerable<PedidoDto>> ObterPedidoCompletoPorId(long pedidoId)
+        public async Task<PedidoDto> ObterPedidoCompletoPorId(long pedidoId)
         {
             try
             {
                 var pedido = await this._servicePedido.ObterPedidoCompletoPorId(pedidoId);
                 var pedidoDto = _mapper.Map<PedidoDto>(pedido);
 
-                List<PedidoDto> pedidoDtoToAray = new List<PedidoDto> { pedidoDto };
-
-                return pedidoDtoToAray;
+                return pedidoDto;
             }
             catch (Exception ex)
             {

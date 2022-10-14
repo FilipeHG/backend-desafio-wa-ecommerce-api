@@ -20,7 +20,7 @@ namespace ApiEcommerceDDD.Application.Interfaces
 
         Task AtualizarCamposEspecificos(PedidoDto pedidoDto);
 
-        Task<IEnumerable<PedidoDto>> ObterPedidoCompletoPorId(long pedidoId);
+        Task<PedidoDto> ObterPedidoCompletoPorId(long pedidoId);
 
         Task<IEnumerable<PedidoDto>> ObterPedidosComPaginacao(int page, int limit, string sort);
 
